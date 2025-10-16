@@ -52,7 +52,6 @@ public class CartServiceImpl implements CartService {
     }
 
     @Transactional
-   // @Retryable(value = OptimisticLockingFailureException.class, maxAttempts = 3, backoff = @Backoff(delay = 100))
     public CartConfirmResponse confirm(CartRequestDto request, String idempotencyKey) {
         if (idempotencyKey != null && !idempotencyKey.isBlank()) {
             Optional<OrderReservation> existing = orderRepository.findByIdempotencyKey(idempotencyKey);
@@ -107,17 +106,14 @@ public class CartServiceImpl implements CartService {
 
     private void applyPromotionChain(CartCalculationContext context) {
 
-        List<Promotion> promotions = promotionRepository.findAll().stream()
+        List<Promotion> promotions = promotionRepository.findAllByActiveTrue().stream()
                 .sorted(Comparator.comparingInt(Promotion::getOrderPriority))
                 .toList();
 
-        PromotionRule previous = null;
+        // pipeline
         for (Promotion promo : promotions) {
-
             PromotionRule rule = ruleFactory.getRule(promo);
-
             rule.apply(context, promo);
-            previous = rule;
         }
     }
 

@@ -2,10 +2,10 @@ package com.kifiya.promotion_quoter.features.product.controller;
 
 import com.kifiya.promotion_quoter.features.product.dto.request.ProductRequest;
 import com.kifiya.promotion_quoter.features.product.dto.response.ProductResponse;
-import com.kifiya.promotion_quoter.features.product.mapper.ProductMapper;
 import com.kifiya.promotion_quoter.features.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +23,6 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request){
-        return ResponseEntity.ok(productService.createProduct(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(request));
     }
 }

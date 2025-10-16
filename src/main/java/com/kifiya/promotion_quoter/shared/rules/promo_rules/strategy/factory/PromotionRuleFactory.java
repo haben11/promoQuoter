@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PromotionRuleFactory {
 
-    private PercentOffCategoryRule percentOffCategoryRule;
-    private BuyXGetYRule buyXGetYRule;
+    private final PercentOffCategoryRule percentOffCategoryRule;
+    private final BuyXGetYRule buyXGetYRule;
 
     public PromotionRule getRule(Promotion promotion) {
         return switch (promotion.getType()) {

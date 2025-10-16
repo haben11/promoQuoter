@@ -59,8 +59,8 @@ public class GlobalException {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleApiException(ResourceNotFoundException ex, HttpServletRequest request) {
-        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request, null);
+    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request, null);
     }
 
     @ExceptionHandler(Exception.class)
@@ -72,7 +72,7 @@ public class GlobalException {
         ErrorResponse response = new ErrorResponse(
                 LocalDateTime.now(),
                 status.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                status.getReasonPhrase(),
                 message,
                 request.getRequestURI(),
                 errors

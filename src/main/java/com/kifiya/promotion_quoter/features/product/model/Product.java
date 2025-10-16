@@ -20,6 +20,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, updatable = false)
     private String id;
 
     @NotBlank(message = "Product name must not be empty")

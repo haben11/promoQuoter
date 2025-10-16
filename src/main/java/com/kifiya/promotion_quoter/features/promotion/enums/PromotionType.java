@@ -15,11 +15,6 @@ public enum PromotionType {
         this.message = message;
     }
 
-    @JsonValue
-    public String getDescription() {
-        return message;
-    }
-
     @JsonCreator
     public static PromotionType fromString(String value) {
         return Arrays.stream(values())

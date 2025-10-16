@@ -5,6 +5,7 @@ import com.kifiya.promotion_quoter.features.promotion.dto.response.PromotionResp
 import com.kifiya.promotion_quoter.features.promotion.service.PromotionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class PromotionController {
 
     @PostMapping
     public ResponseEntity<PromotionResponse> createPromotion(@Valid @RequestBody PromotionRequest request){
-        return ResponseEntity.ok(promotionService.createPromotion(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(promotionService.createPromotion(request));
     }
 
     @PutMapping("/{id}")

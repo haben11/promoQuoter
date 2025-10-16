@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record PromotionRequest(
         @NotNull(message = "Promotion Type is required")
-        PromotionType promotionType,
+        PromotionType type,
         String category,
         @DecimalMin(value = "0.0", message = "Percent must be at least 0.0")
         @DecimalMax(value = "100.0", message = "Percent must be at most 100.0")
