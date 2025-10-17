@@ -6,7 +6,7 @@ A Spring Boot microservice for calculating cart prices with dynamic promotions a
 
 ## Assumptions
 
-- Promotion Priority: Promotions are applied in order of the `orderPriority` field (lower values first)
+- Promotion Priority: Promotions are applied in order of the `orderPriority` field (lower values first i.e. pipeline)
 - Concurrency: Pessimistic locking on products ensures data consistency during stock reservation
 - Audit Trail: Quote responses include `appliedPromotions` with detailed discount information
 - Pricing: All prices are rounded using HALF_UP to 2 decimal places; negative prices are prevented
