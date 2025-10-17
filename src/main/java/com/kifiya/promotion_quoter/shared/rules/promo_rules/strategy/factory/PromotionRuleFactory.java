@@ -18,7 +18,6 @@ public class PromotionRuleFactory {
         return switch (promotion.getType()) {
             case PERCENT_OFF_CATEGORY -> percentOffCategoryRule;
             case BUY_X_GET_Y -> buyXGetYRule;
-            default -> throw new IllegalArgumentException("Unknown promotion type: " + promotion.getType());
         };
     }
 }

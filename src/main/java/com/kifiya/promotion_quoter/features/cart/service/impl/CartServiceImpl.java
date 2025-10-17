@@ -7,7 +7,7 @@ import com.kifiya.promotion_quoter.features.cart.dto.response.CartQuoteResponse;
 import com.kifiya.promotion_quoter.features.cart.service.CartService;
 import com.kifiya.promotion_quoter.features.order.model.OrderReservation;
 import com.kifiya.promotion_quoter.features.order.repository.OrderRepository;
-import com.kifiya.promotion_quoter.features.product.exception.InsufficientStockException;
+import com.kifiya.promotion_quoter.features.product.exception.InsufficientProductException;
 import com.kifiya.promotion_quoter.features.product.exception.ProductNotFoundException;
 import com.kifiya.promotion_quoter.features.product.model.Product;
 import com.kifiya.promotion_quoter.features.product.repository.ProductRepository;
@@ -123,7 +123,7 @@ public class CartServiceImpl implements CartService {
                     .orElseThrow(ProductNotFoundException::new);
 
             if (product.getStock() < item.quantity()) {
-                throw new InsufficientStockException("Insufficient stock for product " + item.productId() + ". Available: " + product.getStock() + ", requested: " + item.quantity());
+                throw new InsufficientProductException("Insufficient stock for product " + item.productId() + ". Available: " + product.getStock() + ", requested: " + item.quantity());
             }
 
             context.getProducts().put(item.productId(), product);

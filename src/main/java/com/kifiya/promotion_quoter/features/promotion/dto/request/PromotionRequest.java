@@ -1,7 +1,6 @@
 package com.kifiya.promotion_quoter.features.promotion.dto.request;
 
 import com.kifiya.promotion_quoter.features.promotion.enums.PromotionType;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

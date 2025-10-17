@@ -1,6 +1,7 @@
 package com.kifiya.promotion_quoter.shared.exceptions.global;
 
 import com.kifiya.promotion_quoter.shared.exceptions.base.BaseException;
+import com.kifiya.promotion_quoter.shared.exceptions.base.InsufficientStockException;
 import com.kifiya.promotion_quoter.shared.exceptions.base.ResourceNotFoundException;
 import com.kifiya.promotion_quoter.shared.exceptions.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -54,13 +53,18 @@ public class GlobalException {
     }
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<?> handleApiException(BaseException ex, HttpServletRequest request) {
+    public ResponseEntity<?> handleBadRequestException(BaseException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request, null);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request, null);
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<?> handleInsufficientStockException(InsufficientStockException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request, null);
     }
 
     @ExceptionHandler(Exception.class)

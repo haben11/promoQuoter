@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Product service Unit Tests")
-public class ProductServiceImplTest {
+class ProductServiceImplTest {
     @Mock
     private ProductRepository productRepository;
     @Mock

@@ -3,7 +3,6 @@ package com.kifiya.promotion_quoter.util;
 import com.kifiya.promotion_quoter.features.cart.dto.request.CartItem;
 import com.kifiya.promotion_quoter.features.cart.dto.request.CartRequestDto;
 import com.kifiya.promotion_quoter.features.product.dto.request.ProductRequest;
-import com.kifiya.promotion_quoter.features.product.dto.response.ProductResponse;
 import com.kifiya.promotion_quoter.features.product.model.Product;
 import com.kifiya.promotion_quoter.features.promotion.dto.request.PromotionRequest;
 import com.kifiya.promotion_quoter.features.promotion.enums.PromotionType;

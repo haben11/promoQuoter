@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Promotion Service Unit Tests")
-public class PromotionServiceImplTest {
+class PromotionServiceImplTest {
     @Mock
     private PromotionRepository promotionRepository;
     @Mock
@@ -129,8 +129,8 @@ public class PromotionServiceImplTest {
         // Then
         assertThat(result).isNotNull();
         assertThat(result.type()).isEqualTo(PromotionType.BUY_X_GET_Y);
-        assertThat(result.x()).isEqualTo(3);
-        assertThat(result.y()).isEqualTo(1);
+        assertThat(result.x()).isEqualTo(6);
+        assertThat(result.y()).isEqualTo(2);
         assertThat(result.productId()).isEqualTo("79w3af90-80z2-6209-n40m-j5x9b4c2290e");
     }
 

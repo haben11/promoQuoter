@@ -1,5 +1,6 @@
 package com.kifiya.promotion_quoter.features.cart.dto.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record CartRequestDto(
+        @Valid
         @NotEmpty(message = "Cart items must not be empty")
         @Size(min = 1, message = "Cart must have at least one item")
         List<CartItem> items,
