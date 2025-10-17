@@ -18,3 +18,12 @@ spring:
       console:
         enabled: true
         path: /h2
+
+
+rate:
+  limit:
+    enabled: true
+    requests:
+      per:
+        minute: 100
+    capacity: 100

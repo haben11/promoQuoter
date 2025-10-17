@@ -298,7 +298,7 @@ class CartControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorMessage", containsString("One or more products not found")));
+                .andExpect(jsonPath("$.errorMessage", containsString("Product not found")));
     }
 
     @Test

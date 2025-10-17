@@ -53,11 +53,11 @@ class CartServiceImplTest {
     void setUp() {
         //setup products
         product1 = TestDataBuilder.buildProduct(
-          "product-1",
-          "Laptop",
-          "Electronics",
-          new BigDecimal(1500),
-          100
+                "product-1",
+                "Laptop",
+                "Electronics",
+                new BigDecimal(1500),
+                100
         );
 
         product2 = TestDataBuilder.buildProduct(
@@ -83,7 +83,8 @@ class CartServiceImplTest {
     void shouldCalculateQuoteWithoutPromotions() {
 
         //Given
-        when(productRepository.findAllById(any())).thenReturn(List.of(product1, product2));
+        when(productRepository.findById("product-1")).thenReturn(Optional.of(product1));
+        when(productRepository.findById("product-2")).thenReturn(Optional.of(product2));
         when(promotionRepository.findAllByActiveTrue()).thenReturn(List.of());
 
         //when
@@ -97,7 +98,8 @@ class CartServiceImplTest {
         assertThat(response.itemPrices()).hasSize(2);
         assertThat(response.appliedPromotions()).hasSize(0);
 
-        verify(productRepository, times(1)).findAllById(any());
+        verify(productRepository, times(1)).findById("product-1");
+        verify(productRepository, times(1)).findById("product-2");
         verify(promotionRepository, times(1)).findAllByActiveTrue();
     }
 
@@ -113,7 +115,8 @@ class CartServiceImplTest {
                 1
         );
 
-        when(productRepository.findAllById(any())).thenReturn(List.of(product1, product2));
+        when(productRepository.findById("product-1")).thenReturn(Optional.of(product1));
+        when(productRepository.findById("product-2")).thenReturn(Optional.of(product2));
         when(promotionRepository.findAllByActiveTrue()).thenReturn(List.of(promotion));
         when(ruleFactory.getRule(promotion)).thenReturn(promotionRule);
         doNothing().when(promotionRule).apply(any(), any());
@@ -134,7 +137,6 @@ class CartServiceImplTest {
         String idempotencyKey = "idempotency-key-123";
 
         when(orderRepository.findByIdempotencyKey(idempotencyKey)).thenReturn(Optional.empty());
-        when(productRepository.findAllById(any())).thenReturn(List.of(product1, product2));
         when(productRepository.findById("product-1")).thenReturn(Optional.of(product1));
         when(productRepository.findById("product-2")).thenReturn(Optional.of(product2));
         when(orderRepository.save(any(OrderReservation.class))).thenAnswer(invocation -> {
@@ -157,17 +159,5 @@ class CartServiceImplTest {
 
         verify(productRepository, times(2)).save(any(Product.class));
         verify(orderRepository, times(1)).save(any(OrderReservation.class));
-    }
-
-    @Test
-    @DisplayName("Should handle idempotent requests correctly")
-    void shouldHandleIdempotentRequests() {
-
-    }
-
-    @Test
-    @DisplayName("Should apply promotions in order of priority")
-    void shouldApplyPromotionsInOrderOfPriority() {
-
     }
 }

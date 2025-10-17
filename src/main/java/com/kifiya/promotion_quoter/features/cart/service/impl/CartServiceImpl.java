@@ -13,7 +13,6 @@ import com.kifiya.promotion_quoter.features.product.model.Product;
 import com.kifiya.promotion_quoter.features.product.repository.ProductRepository;
 import com.kifiya.promotion_quoter.features.promotion.model.Promotion;
 import com.kifiya.promotion_quoter.features.promotion.repository.PromotionRepository;
-import com.kifiya.promotion_quoter.shared.exceptions.base.BaseException;
 import com.kifiya.promotion_quoter.shared.rules.context.CartCalculationContext;
 import com.kifiya.promotion_quoter.shared.rules.promo_rules.PromotionRule;
 import com.kifiya.promotion_quoter.shared.rules.promo_rules.strategy.factory.PromotionRuleFactory;
@@ -25,11 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -62,7 +57,6 @@ public class CartServiceImpl implements CartService {
         }
 
         CartCalculationContext context = buildContext(request);
-        lockAndCheckStock(context);
 
         applyPromotionChain(context);
         BigDecimal total = context.getCurrentPrices().values().stream()
@@ -82,25 +76,41 @@ public class CartServiceImpl implements CartService {
 
     private CartCalculationContext buildContext(CartRequestDto request) {
 
-        List<String> productIds = request.items().stream().map(CartItem::productId).distinct().toList();
-
-        Map<String, Product> products = productRepository.findAllById(productIds).stream()
-                .collect(Collectors.toMap(Product::getId, p -> p));
-
-        if (products.size() != productIds.size()) {
-            throw new BaseException("One or more products not found");
-        }
-
         CartCalculationContext context = new CartCalculationContext();
-
         context.setItems(request.items());
-        context.setProducts(products);
+        Map<String, Product> lockedProducts = new HashMap<>();
+
+        List<String> sortedProductIds = request.items().stream()
+                .map(CartItem::productId)
+                .distinct()
+                .sorted()
+                .toList();
+
+        for (String productId : sortedProductIds) {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(ProductNotFoundException::new);
+
+            lockedProducts.put(productId, product);
+        }
 
         for (CartItem item : request.items()) {
-            Product p = products.get(item.productId());
-            BigDecimal linePrice = PriceUtil.toCents(p.getPrice().multiply(BigDecimal.valueOf(item.quantity())));
+            Product product = lockedProducts.get(item.productId());
+            if (product.getStock() < item.quantity()) {
+                throw new InsufficientProductException(
+                        "Insufficient stock for product " + item.productId() +
+                                ". Available: " + product.getStock() +
+                                ", requested: " + item.quantity());
+            }
+        }
+
+        context.setProducts(lockedProducts);
+
+        for (CartItem item : request.items()) {
+            Product p = lockedProducts.get(item.productId());
+            BigDecimal linePrice = PriceUtil.roundUp(p.getPrice().multiply(BigDecimal.valueOf(item.quantity())));
             context.getCurrentPrices().put(item.productId(), linePrice);
         }
+
         return context;
     }
 

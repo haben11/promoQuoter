@@ -18,6 +18,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Table(name = "promotion",
+        indexes = {
+                @Index(name = "idx_promotion_promotion_id", columnList = "id"),
+                @Index(name = "idx_promotion_promotion_type", columnList = "type")
+        })
 @RequiredArgsConstructor
 public class Promotion {
 

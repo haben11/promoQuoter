@@ -20,7 +20,7 @@ public class PercentOffCategoryRule implements PromotionRule {
             if (product != null && category.equals(product.getCategory())) {
                 BigDecimal originalPrice = context.getCurrentPrices().get(item.productId());
                 BigDecimal discount = originalPrice.multiply(BigDecimal.valueOf(percent));
-                BigDecimal newPrice = PriceUtil.toCents(originalPrice.subtract(discount).max(BigDecimal.ZERO));
+                BigDecimal newPrice = PriceUtil.roundUp(originalPrice.subtract(discount).max(BigDecimal.ZERO));
                 context.getCurrentPrices().put(item.productId(), newPrice);
                 context.addAudit("Applied " + getDescription(promotion) + " to item " + item.productId() + ": discount " + discount);
             }

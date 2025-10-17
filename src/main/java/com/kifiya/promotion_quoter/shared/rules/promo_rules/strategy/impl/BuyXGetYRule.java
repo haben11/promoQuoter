@@ -22,7 +22,7 @@ public class BuyXGetYRule implements PromotionRule {
                 int freeItems = (qty / x) * y;
                 BigDecimal unitPrice = context.getProducts().get(item.productId()).getPrice();
                 BigDecimal paidQty = BigDecimal.valueOf(qty - freeItems);
-                BigDecimal newPrice = PriceUtil.toCents(paidQty.multiply(unitPrice));
+                BigDecimal newPrice = PriceUtil.roundUp(paidQty.multiply(unitPrice));
                 BigDecimal discount = BigDecimal.valueOf(freeItems).multiply(unitPrice);
                 context.getCurrentPrices().put(item.productId(), newPrice);
                 context.addAudit("Applied " + getDescription(promotion) + " to item " + item.productId() + ": free items " + freeItems + ", discount " + discount);

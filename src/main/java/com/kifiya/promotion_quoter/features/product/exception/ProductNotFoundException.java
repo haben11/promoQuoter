@@ -4,6 +4,6 @@ import com.kifiya.promotion_quoter.shared.exceptions.base.ResourceNotFoundExcept
 
 public class ProductNotFoundException extends ResourceNotFoundException {
     public ProductNotFoundException() {
-        super(ProductExceptionMessages.PRODUCT_NOT_FOUND.name());
+        super(ProductExceptionMessages.PRODUCT_NOT_FOUND.getMessage());
     }
 }
