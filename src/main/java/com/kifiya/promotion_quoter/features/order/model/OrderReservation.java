@@ -2,6 +2,7 @@ package com.kifiya.promotion_quoter.features.order.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -11,7 +12,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Table(name = "order_reservation",
+        indexes = {
+                @Index(name = "idx_order_reservation_id", columnList = "id"),
+                @Index(name = "idx_order_reservation_idempotency_key", columnList = "idempotencyKey")
+        })
 @RequiredArgsConstructor
+@SQLDelete(sql = "UPDATE order_reservation SET deleted = true WHERE id = ?")
 public class OrderReservation {
 
     @Id
@@ -23,6 +30,8 @@ public class OrderReservation {
     private String idempotencyKey;
 
     private BigDecimal finalPrice;
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     @Override
     public final boolean equals(Object o) {

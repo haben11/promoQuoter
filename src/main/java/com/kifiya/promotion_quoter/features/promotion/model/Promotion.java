@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -24,6 +25,7 @@ import java.util.Objects;
                 @Index(name = "idx_promotion_promotion_type", columnList = "type")
         })
 @RequiredArgsConstructor
+@SQLDelete(sql = "UPDATE promotion SET deleted = true WHERE id = ?")
 public class Promotion {
 
     @Id
@@ -55,6 +57,8 @@ public class Promotion {
 
     @Column(nullable = false)
     private boolean active = true;
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     @Override
     public final boolean equals(Object o) {

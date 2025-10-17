@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import java.util.Objects;
                 @Index(name = "idx_product_product_category", columnList = "category")
         })
 @RequiredArgsConstructor
+@SQLDelete(sql = "UPDATE product SET deleted = true WHERE id = ?")
 public class Product {
 
     @Id
@@ -45,6 +47,9 @@ public class Product {
 
     @Version
     private int version;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     @Override
     public final boolean equals(Object o) {
