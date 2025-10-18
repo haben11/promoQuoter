@@ -9,10 +9,12 @@ import com.kifiya.promotion_quoter.features.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -22,9 +24,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse createProduct(ProductRequest request) {
 
         Product entity = mapper.toEntity(request);
-
-        //TODO always check uniqueness of each product and decide what to do if duplicate exists
-
         return mapper.toBo(productRepository.save(entity));
     }
 }

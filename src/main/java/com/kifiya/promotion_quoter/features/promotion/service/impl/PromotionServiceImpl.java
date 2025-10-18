@@ -10,10 +10,12 @@ import com.kifiya.promotion_quoter.features.promotion.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class PromotionServiceImpl implements PromotionService {
 
     private final PromotionRepository repository;
@@ -23,9 +25,6 @@ public class PromotionServiceImpl implements PromotionService {
     public PromotionResponse createPromotion(PromotionRequest request) {
 
         Promotion entity = mapper.toEntity(request);
-
-        //TODO always check uniqueness of each promotion and decide what to do if duplicate exists
-
         return mapper.toBo(repository.save(entity));
     }
 

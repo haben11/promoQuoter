@@ -29,6 +29,7 @@ import java.util.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CartServiceImpl implements CartService {
 
     private final ProductRepository productRepository;
