@@ -21,8 +21,8 @@ import java.util.Objects;
 @ToString
 @Table(name = "promotion",
         indexes = {
-                @Index(name = "idx_promotion_promotion_id", columnList = "id"),
-                @Index(name = "idx_promotion_promotion_type", columnList = "type")
+                @Index(name = "idx_promotion_promotion_type", columnList = "type"),
+                @Index(name = "idx_promotion_promotion_active", columnList = "active")
         })
 @RequiredArgsConstructor
 @SQLDelete(sql = "UPDATE promotion SET deleted = true WHERE id = ?")
